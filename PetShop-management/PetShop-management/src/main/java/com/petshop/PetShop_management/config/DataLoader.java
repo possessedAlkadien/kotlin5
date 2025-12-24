@@ -26,10 +26,21 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private ProductOrderRepository productOrderRepository;
     
+    
+
     @Override
     public void run(String... args) throws Exception 
     {
-Category dogs = new Category();
+
+    productRepository.deleteAll();
+    categoryRepository.deleteAll();
+    animalRepository.deleteAll();
+    supplierRepository.deleteAll();
+    customerRepository.deleteAll();
+    employeeRepository.deleteAll();
+    productOrderRepository.deleteAll();
+
+    Category dogs = new Category();
     dogs.setCategoryName("Собаки");
     dogs.setDescript("Категория товаров и животных для собак");
 
@@ -102,7 +113,7 @@ Category dogs = new Category();
     johnDoe.setLastName("Иванов");
     johnDoe.setSurName("Иванович");
     johnDoe.setEmail("ivan.ivanov@example.com");
-    johnDoe.setPhoneNum("+7-555-123-4567");
+    johnDoe.setPhoneNumber("+7-555-123-4567");
     johnDoe.setAddress("г. СПб, пр. Невский, д. 25");
 
     Customer janeSmith = new Customer();
@@ -110,7 +121,7 @@ Category dogs = new Category();
     janeSmith.setLastName("Смирнова");
     janeSmith.setSurName("Петровна");
     janeSmith.setEmail("anna.smith@example.com");
-    janeSmith.setPhoneNum("+7-555-987-6543");
+    janeSmith.setPhoneNumber("+7-555-987-6543");
     janeSmith.setAddress("г. СПб, пр. Невский, д. 25");
 
     customerRepository.saveAll(Arrays.asList(johnDoe, janeSmith));

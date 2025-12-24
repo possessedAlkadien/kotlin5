@@ -10,13 +10,13 @@ import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-    List<Customer> findByLastNameContainingIgnoreCase(String lastname);
+    List<Customer> findByLastnameContainingIgnoreCase(String lastname);
 
     Optional<Customer> findByEmail(String email);
 
     Optional<Customer> findById(Long customer_id);
 
-    List<Customer> findByPhoneNum(String phoneNumber);
+    List<Customer> findByPhoneNumber(String phoneNumber);
 
     @Query("SELECT c FROM Customer c WHERE c.lastname LIKE %:lastname%")
     List<Customer> findByFullName(@Param("lastname") String lastname);

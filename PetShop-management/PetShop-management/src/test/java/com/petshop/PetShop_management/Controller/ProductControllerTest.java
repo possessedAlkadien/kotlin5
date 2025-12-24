@@ -7,9 +7,11 @@ import com.petshop.PetShop_management.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureWebMvc
+@AutoConfigureMockMvc
 @Transactional
 class ProductControllerTest {
 
@@ -36,6 +39,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser 
     void getAllProducts_ShouldReturnEmptyList() throws Exception {
         mockMvc.perform(get("/api/products"))
                 .andExpect(status().isOk())
@@ -45,6 +49,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser 
     void createProduct_ShouldReturnCreatedProduct() throws Exception {
         CreateProductDTO createProductDTO = new CreateProductDTO();
         createProductDTO.setName("Тестовый Продукт");
@@ -64,6 +69,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser 
     void getProductById_WhenProductExists_ShouldReturnProduct() throws Exception {
         Product product = new Product();
         product.setProductName("Продукт");
@@ -81,12 +87,14 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser 
     void getProductById_WhenProductNotExists_ShouldReturnNotFound() throws Exception {
         mockMvc.perform(get("/api/products/999"))
                 .andExpect(status().isNotFound());
     }
 
     @Test
+    @WithMockUser 
     void updateProduct_ShouldReturnUpdatedProduct() throws Exception {
         Product existingProduct = new Product();
         existingProduct.setProductName("Старый Продукт");
@@ -112,6 +120,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser 
     void deleteProduct_ShouldReturnNoContent() throws Exception {
         Product product = new Product();
         product.setProductName("Продукт для удаления");
@@ -128,6 +137,7 @@ class ProductControllerTest {
     }
 
     @Test
+    @WithMockUser 
     void searchProducts_ByName_ShouldReturnMatchingProducts() throws Exception {
         Product product1 = new Product();
         product1.setProductName("Кошкин корм");

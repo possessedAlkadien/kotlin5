@@ -16,14 +16,15 @@ public class DataSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        userRepository.deleteAll();
 
         User user = new User();
         user.setFirstName("Test");
         user.setLastName("User");
-        user.setSurName("Testov"); 
+        user.setSurname("Testov"); 
         user.setEmail("test@example.com");
         user.setPassword(passwordEncoder.encode("testpassword")); 
-        user.setPhoneNum("123456789");
+        user.setPhoneNumber("123456789");
         user.setAddress("Test Address");
         userRepository.save(user);
         System.out.println("Тестовый пользователь создан: test@example.com / testpassword (хэшированный пароль в БД)");

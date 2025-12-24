@@ -1,25 +1,27 @@
-package com.petshop.PetShop_management.Controller;
+package com.petshop.PetShop_management.Controller; 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.petshop.PetShop_management.dto.CreateCustomerDTO;
 import com.petshop.PetShop_management.entity.Customer;
 import com.petshop.PetShop_management.repository.CustomerRepository;
 
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc; 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@SpringBootTest
-@AutoConfigureWebMvc
-@Transactional
+@SpringBootTest 
+@AutoConfigureMockMvc  
+@Transactional 
 class CustomerControllerTest {
 
     @Autowired
@@ -29,7 +31,7 @@ class CustomerControllerTest {
     private ObjectMapper objectMapper;
 
     @Autowired
-    private CustomerRepository customerRepository;  
+    private CustomerRepository customerRepository;
 
     @BeforeEach
     void setUp() {
@@ -37,8 +39,9 @@ class CustomerControllerTest {
     }
 
     @Test
+    @WithMockUser  
     void getAllCustomers_ShouldReturnEmptyList() throws Exception {
-        mockMvc.perform(get("/api/customers"))
+        mockMvc.perform(get("/api/customers"))  
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())
@@ -46,6 +49,7 @@ class CustomerControllerTest {
     }
 
     @Test
+    @WithMockUser
     void createCustomer_ShouldReturnCreatedCustomer() throws Exception {
         CreateCustomerDTO createCustomerDTO = new CreateCustomerDTO();
         createCustomerDTO.setFirstname("Иван");
@@ -58,45 +62,48 @@ class CustomerControllerTest {
         mockMvc.perform(post("/api/customers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createCustomerDTO)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isCreated()) 
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.firstname").value("Иван"))
+                .andExpect(jsonPath("$.firstname").value("Иван"))  
                 .andExpect(jsonPath("$.lastname").value("Иванов"))
                 .andExpect(jsonPath("$.email").value("ivan@example.com"));
     }
 
     @Test
+    @WithMockUser
     void getCustomerById_WhenCustomerExists_ShouldReturnCustomer() throws Exception {
         Customer customer = new Customer();
         customer.setFirstName("Иван");
         customer.setLastName("Иванов");
         customer.setSurName("Иванович");
         customer.setEmail("ivan@example.com");
-        customer.setPhoneNum("+1234567890");
+        customer.setPhoneNumber("+1234567890");
         customer.setAddress("Москва, ул. Ленина");
         customer = customerRepository.save(customer);
 
         mockMvc.perform(get("/api/customers/{id}", customer.getCustomerId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(customer.getCustomerId()))
-                .andExpect(jsonPath("$.firstname").value("Иван"));
+                .andExpect(jsonPath("$.id").value(customer.getCustomerId()))  
+                .andExpect(jsonPath("$.firstname").value("Иван"));  
     }
 
     @Test
+    @WithMockUser
     void getCustomerById_WhenCustomerNotExists_ShouldReturnNotFound() throws Exception {
         mockMvc.perform(get("/api/customers/999"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound());  
     }
 
     @Test
+    @WithMockUser
     void updateCustomer_ShouldReturnUpdatedCustomer() throws Exception {
         Customer existingCustomer = new Customer();
         existingCustomer.setFirstName("Иван");
         existingCustomer.setLastName("Иванов");
         existingCustomer.setSurName("Иванович");
         existingCustomer.setEmail("ivan@example.com");
-        existingCustomer.setPhoneNum("+1234567890");
+        existingCustomer.setPhoneNumber("+1234567890");
         existingCustomer.setAddress("Москва, ул. Ленина");
         existingCustomer = customerRepository.save(existingCustomer);
 
@@ -118,31 +125,33 @@ class CustomerControllerTest {
     }
 
     @Test
+    @WithMockUser
     void deleteCustomer_ShouldReturnNoContent() throws Exception {
         Customer customer = new Customer();
         customer.setFirstName("Иван");
         customer.setLastName("Иванов");
         customer.setSurName("Иванович");
         customer.setEmail("ivan@example.com");
-        customer.setPhoneNum("+1234567890");
+        customer.setPhoneNumber("+1234567890");
         customer.setAddress("Москва, ул. Ленина");
         customer = customerRepository.save(customer);
 
         mockMvc.perform(delete("/api/customers/{id}", customer.getCustomerId()))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent());  
 
         mockMvc.perform(get("/api/customers/{id}", customer.getCustomerId()))
                 .andExpect(status().isNotFound());
     }
 
     @Test
+    @WithMockUser
     void searchCustomers_ShouldReturnMatchingCustomers() throws Exception {
         Customer customer = new Customer();
         customer.setFirstName("Иван");
         customer.setLastName("Иванов");
         customer.setSurName("Иванович");
         customer.setEmail("ivan@example.com");
-        customer.setPhoneNum("+1234567890");
+        customer.setPhoneNumber("+1234567890");
         customer.setAddress("Москва, ул. Ленина");
         customerRepository.save(customer);
 
@@ -152,6 +161,6 @@ class CustomerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$").isArray())
                 .andExpect(jsonPath("$.length()").value(1))
-                .andExpect(jsonPath("$[0].lastname").value("Иванов"));
+                .andExpect(jsonPath("$[0].lastname").value("Иванов"));  
     }
 }

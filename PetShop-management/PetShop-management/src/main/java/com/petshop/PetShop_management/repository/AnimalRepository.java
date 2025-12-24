@@ -23,7 +23,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     List<Animal> findBySupplier(Supplier supplier);  
 
-    @Query("SELECT a FROM Animal a WHERE a.name LIKE %:name% AND a.type LIKE %:name%")
+    @Query("SELECT a FROM Animal a WHERE a.name LIKE %:name% AND a.type LIKE %:type%")
     List<Animal> findByNameAndType(@Param("name") String name, @Param("type") String type);  
 }
 

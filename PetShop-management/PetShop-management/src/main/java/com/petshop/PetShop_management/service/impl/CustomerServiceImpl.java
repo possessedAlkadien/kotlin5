@@ -37,9 +37,9 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.deleteById(customer_id);
     }
 
-    @Override
-    public List<Customer> findByFullName(String lastname) {
-        return customerRepository.findByFullName(lastname);
+     @Override
+    public List<Customer> findByFullName(String fullName) {
+        return customerRepository.findByLastnameContainingIgnoreCase(fullName);
     }
 
     public Customer createCustomerFromDTO(CreateCustomerDTO dto) {
@@ -47,7 +47,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setFirstName(dto.getFirstname());
         customer.setLastName(dto.getLastname());
         customer.setEmail(dto.getEmail());
-        customer.setPhoneNum(dto.getPhoneNumber());
+        customer.setPhoneNumber(dto.getPhoneNumber());
         return save(customer);
     }
 

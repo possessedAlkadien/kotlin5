@@ -94,7 +94,7 @@ public class CustomerController {
         dto.setLastname(customer.getLastName());
         dto.setSurname(customer.getSurName());
         dto.setEmail(customer.getEmail());
-        dto.setPhoneNumber(customer.getPhoneNum());
+        dto.setPhoneNumber(customer.getPhoneNumber());
         dto.setAddress(customer.getAddress());
         return dto;
     }
@@ -105,7 +105,7 @@ public class CustomerController {
         customer.setLastName(dto.getLastname());
         customer.setSurName(dto.getSurname());
         customer.setEmail(dto.getEmail());
-        customer.setPhoneNum(dto.getPhoneNumber());
+        customer.setPhoneNumber(dto.getPhoneNumber());
         customer.setAddress(dto.getAddress());
         return customer;
     }

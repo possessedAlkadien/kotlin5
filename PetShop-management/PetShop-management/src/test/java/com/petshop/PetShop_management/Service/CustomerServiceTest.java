@@ -104,13 +104,13 @@ class CustomerServiceTest {
     void findByFullName_ShouldReturnMatchingCustomers() {
         // Given
         List<Customer> expectedCustomers = Arrays.asList(testCustomer);
-        when(customerRepository.findByLastNameContainingIgnoreCase(anyString())).thenReturn(expectedCustomers);
+        when(customerRepository.findByLastnameContainingIgnoreCase(anyString())).thenReturn(expectedCustomers);
 
         List<Customer> result = customerService.findByFullName("Иванов");
 
         // Then
         assertEquals(1, result.size());
         assertEquals("Иванов", result.get(0).getLastName());
-        verify(customerRepository).findByLastNameContainingIgnoreCase("Иванов");
+        verify(customerRepository).findByLastnameContainingIgnoreCase("Иванов");
     }
 }
